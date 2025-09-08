@@ -24,6 +24,7 @@ function App(): React.JSX.Element {
                     <div style={{width: "80px", height: "30px", backgroundColor: "red"}} />
                 </Col>
 
+
                 <Col> <Button onClick={ () => { console.log("Hello World!") } }>
                     Log Hello World</Button>
                    <div style={{width: "80px", height: "30px", backgroundColor: "red"}} />
