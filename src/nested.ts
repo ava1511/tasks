@@ -1,5 +1,6 @@
 import { Answer } from "./interfaces/answer";
 import { Question, QuestionType } from "./interfaces/question";
+import { duplicateQuestion } from "./objects";
 
 /**
  * Consumes an array of questions and returns a new array with only the questions
@@ -118,7 +119,15 @@ export function toCSV(questions: Question[]): string {
  * making the `text` an empty string, and using false for both `submitted` and `correct`.
  */
 export function makeAnswers(questions: Question[]): Answer[] {
-    return [];
+    const answers = questions.map(
+        (q: Question): Answer => ({
+            questionId: q.id,
+            text: "",
+            submitted: false,
+            correct: false,
+        }),
+    );
+    return answers;
 }
 
 /***
@@ -126,7 +135,10 @@ export function makeAnswers(questions: Question[]): Answer[] {
  * each question is now published, regardless of its previous published status.
  */
 export function publishAll(questions: Question[]): Question[] {
-    return [];
+    const published = questions.map(
+        (q: Question): Question => ({ ...q, published: true }),
+    );
+    return published;
 }
 
 /***
@@ -134,7 +146,9 @@ export function publishAll(questions: Question[]): Question[] {
  * are the same type. They can be any type, as long as they are all the SAME type.
  */
 export function sameType(questions: Question[]): boolean {
-    return false;
+    const types = questions.map((q: Question): QuestionType => q.type);
+    const checkSame = types.every((val) => val === types[0]);
+    return checkSame;
 }
 
 /***
@@ -148,7 +162,19 @@ export function addNewQuestion(
     name: string,
     type: QuestionType,
 ): Question[] {
-    return [];
+    return [
+        ...questions,
+        {
+            id,
+            name,
+            type,
+            body: "",
+            expected: "",
+            options: [],
+            points: 1,
+            published: false,
+        },
+    ];
 }
 
 /***
@@ -161,7 +187,13 @@ export function renameQuestionById(
     targetId: number,
     newName: string,
 ): Question[] {
-    return [];
+    const copy = questions.map(
+        (question: Question): Question =>
+            question.id === targetId ?
+                { ...question, name: newName }
+            :   { ...question },
+    );
+    return copy;
 }
 
 /***
@@ -171,12 +203,27 @@ export function renameQuestionById(
  * AND if the `newQuestionType` is no longer "multiple_choice_question" than the `options`
  * must be set to an empty list.
  */
+
 export function changeQuestionTypeById(
     questions: Question[],
     targetId: number,
     newQuestionType: QuestionType,
 ): Question[] {
-    return [];
+    const copy = questions.map((question: Question): Question => {
+        if (question.id === targetId) {
+            return {
+                ...question,
+                type: newQuestionType,
+                options:
+                    newQuestionType === "multiple_choice_question" ?
+                        question.options
+                    :   [],
+            };
+        } else {
+            return { ...question };
+        }
+    });
+    return copy;
 }
 
 /**
@@ -189,13 +236,39 @@ export function changeQuestionTypeById(
  * Remember, if a function starts getting too complicated, think about how a helper function
  * can make it simpler! Break down complicated tasks into little pieces.
  */
+function changeOptions(
+    options: string[],
+    targetOptionIndex: number,
+    newOption: string,
+): string[] {
+    if (targetOptionIndex === -1) {
+        return [...options, newOption];
+    } else {
+        return options.map((option, index) =>
+            index === targetOptionIndex ? newOption : option,
+        );
+    }
+}
 export function editOption(
     questions: Question[],
     targetId: number,
     targetOptionIndex: number,
     newOption: string,
 ): Question[] {
-    return [];
+    const newArray = questions.map(
+        (q: Question): Question =>
+            q.id === targetId ?
+                {
+                    ...q,
+                    options: changeOptions(
+                        q.options,
+                        targetOptionIndex,
+                        newOption,
+                    ),
+                }
+            :   q,
+    );
+    return newArray;
 }
 
 /***
@@ -209,5 +282,12 @@ export function duplicateQuestionInArray(
     targetId: number,
     newId: number,
 ): Question[] {
-    return [];
+    const duplicated = questions.reduce((list: Question[], q: Question) => {
+        if (q.id === targetId) {
+            return [...list, q, duplicateQuestion(newId, q)];
+        } else {
+            return [...list, q];
+        }
+    }, []);
+    return duplicated;
 }
