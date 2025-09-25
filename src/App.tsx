@@ -4,13 +4,12 @@ import { ChangeType } from "./components/ChangeType";
 import { RevealAnswer } from "./components/RevealAnswer";
 import { StartAttempt } from "./components/StartAttempt";
 import { TwoDice } from "./components/TwoDice";
-import { CycleHoliday } from "./components/CycleHoliday";
+// import { CycleHoliday } from "./components/CycleHoliday";
 import { Counter } from "./components/Counter";
 
 function App(): React.JSX.Element {
     return (
         <div className="App">
-            <h1> Task 3! </h1>
             <header className="App-header">
                 Ava Natale UD CISC275 with React Hooks and TypeScript
             </header>
@@ -24,8 +23,8 @@ function App(): React.JSX.Element {
             <TwoDice></TwoDice>
             <hr />
             <ChangeType></ChangeType>
-            <hr />
-            <CycleHoliday></CycleHoliday>
+            {/* <hr /> */}
+            {/* <CycleHoliday></CycleHoliday> */}
         </div>
     );
 }
