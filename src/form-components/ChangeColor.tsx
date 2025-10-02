@@ -47,29 +47,19 @@ export function ChangeColor(): React.JSX.Element {
                     ></Form.Check>
                 ))}
             </Form.Group>
-            <div
-                data-testid="colored-box"
-                style={{
-                    width: "50px",
-                    height: "50px",
-                    backgroundColor: color,
-                    display: "inline-block",
-                    verticalAlign: "bottom",
-                    marginLeft: "5px",
-                }}
-            >
-                {color}
-            </div>
-
             <p>
                 You have chosen:
-                <span
+                <div
+                    data-testid="colored-box"
                     style={{
                         backgroundColor: color,
+                        display: "inline-block",
+                        verticalAlign: "bottom",
+                        marginLeft: "5px",
                     }}
                 >
-                    {color}.
-                </span>
+                    {color}
+                </div>
             </p>
         </div>
     );
