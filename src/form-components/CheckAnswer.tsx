@@ -14,15 +14,17 @@ export function CheckAnswer({
 
     return (
         <div>
+            <h3>Check Answer</h3>
             <Form.Group controlId="formAnswer">
                 <Form.Label>Answer:</Form.Label>
                 <Form.Control
                     type="text"
                     value={answer}
                     onChange={checkMatch}
+                    style={{ width: "200px" }}
                 />
             </Form.Group>
-            <h3>Check Answer</h3>
+
             {answer === expectedAnswer ? "✔️" : "❌"}
         </div>
     );
